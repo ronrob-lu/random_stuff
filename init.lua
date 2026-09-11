@@ -33,21 +33,35 @@ minetest.register_node("random_stuff:wood_structure", {
 	selection_box = {
 		type = "fixed",
 		fixed = {
-			{-1.63, 1.4, -1.63, 1.63, 2.5, 1.63},
+			-- Top ring (broken into 4 walls so the center is free for placement/falling nodes)
+			{-1.63, 1.4, 1.05, 1.63, 2.5, 1.63},   -- North top wall
+			{-1.63, 1.4, -1.63, 1.63, 2.5, -1.05}, -- South top wall
+			{-1.63, 1.4, -1.05, -1.05, 2.5, 1.05}, -- West top wall
+			{1.05, 1.4, -1.05, 1.63, 2.5, 1.05},   -- East top wall
+			-- Legs
 			{-1.5, -0.5, -1.5, -1.05, 1.4, -1.05},
 			{1.05, -0.5, -1.5, 1.5, 1.4, -1.05},
 			{-1.5, -0.5, 1.05, -1.05, 1.4, 1.5},
-			{1.05, -0.5, 1.05, 1.5, 1.4, 1.5}
+			{1.05, -0.5, 1.05, 1.5, 1.4, 1.5},
+			-- Center floor to catch sand and allow manual stacking
+			{-1.05, 1.4, -1.05, 1.05, 1.5, 1.05}
 		}
 	},
 	collision_box = {
 		type = "fixed",
 		fixed = {
-			{-1.63, 1.4, -1.63, 1.63, 2.5, 1.63},
+			-- Top ring (broken into 4 walls so the center is free for placement/falling nodes)
+			{-1.63, 1.4, 1.05, 1.63, 2.5, 1.63},   -- North top wall
+			{-1.63, 1.4, -1.63, 1.63, 2.5, -1.05}, -- South top wall
+			{-1.63, 1.4, -1.05, -1.05, 2.5, 1.05}, -- West top wall
+			{1.05, 1.4, -1.05, 1.63, 2.5, 1.05},   -- East top wall
+			-- Legs
 			{-1.5, -0.5, -1.5, -1.05, 1.4, -1.05},
 			{1.05, -0.5, -1.5, 1.5, 1.4, -1.05},
 			{-1.5, -0.5, 1.05, -1.05, 1.4, 1.5},
-			{1.05, -0.5, 1.05, 1.5, 1.4, 1.5}
+			{1.05, -0.5, 1.05, 1.5, 1.4, 1.5},
+			-- Center floor to catch sand and allow manual stacking
+			{-1.05, 1.4, -1.05, 1.05, 1.5, 1.05}
 		}
 	},
 	groups = {falling_node = 1, oddly_breakable_by_hand = 3},
