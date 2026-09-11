@@ -1,7 +1,7 @@
 minetest.register_node("random_stuff:chaos_chest", {
 	description = "Chaos Chest",
 	drawtype = "mesh",
-	mesh = "chest.glb",
+	mesh = "chest.gltf",
 	paramtype = "light",
 	paramtype2 = "facedir",
 	groups = {choppy = 2, oddly_breakable_by_hand = 2},
