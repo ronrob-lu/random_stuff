@@ -33,39 +33,136 @@ minetest.register_node("random_stuff:wood_structure", {
 	selection_box = {
 		type = "fixed",
 		fixed = {
-			-- Top ring (broken into 4 walls so the center is free for placement/falling nodes)
-			{-1.63, 1.4, 1.05, 1.63, 2.5, 1.63},   -- North top wall
-			{-1.63, 1.4, -1.63, 1.63, 2.5, -1.05}, -- South top wall
-			{-1.63, 1.4, -1.05, -1.05, 2.5, 1.05}, -- West top wall
-			{1.05, 1.4, -1.05, 1.63, 2.5, 1.05},   -- East top wall
-			-- Legs
-			{-1.5, -0.5, -1.5, -1.05, 1.4, -1.05},
-			{1.05, -0.5, -1.5, 1.5, 1.4, -1.05},
-			{-1.5, -0.5, 1.05, -1.05, 1.4, 1.5},
-			{1.05, -0.5, 1.05, 1.5, 1.4, 1.5},
-			-- Center floor to catch sand and allow manual stacking
-			{-1.05, 1.4, -1.05, 1.05, 1.5, 1.05}
+			{-1.5, -0.5, -1.5, -1.05, 0.5, -1.05},
+			{1.05, -0.5, -1.5, 1.5, 0.5, -1.05},
+			{-1.5, -0.5, 1.05, -1.05, 0.5, 1.5},
+			{1.05, -0.5, 1.05, 1.5, 0.5, 1.5}
 		}
 	},
 	collision_box = {
 		type = "fixed",
 		fixed = {
-			-- Top ring (broken into 4 walls so the center is free for placement/falling nodes)
-			{-1.63, 1.4, 1.05, 1.63, 2.5, 1.63},   -- North top wall
-			{-1.63, 1.4, -1.63, 1.63, 2.5, -1.05}, -- South top wall
-			{-1.63, 1.4, -1.05, -1.05, 2.5, 1.05}, -- West top wall
-			{1.05, 1.4, -1.05, 1.63, 2.5, 1.05},   -- East top wall
-			-- Legs
-			{-1.5, -0.5, -1.5, -1.05, 1.4, -1.05},
-			{1.05, -0.5, -1.5, 1.5, 1.4, -1.05},
-			{-1.5, -0.5, 1.05, -1.05, 1.4, 1.5},
-			{1.05, -0.5, 1.05, 1.5, 1.4, 1.5},
-			-- Center floor to catch sand and allow manual stacking
-			{-1.05, 1.4, -1.05, 1.05, 1.5, 1.05}
+			{-1.5, -0.5, -1.5, -1.05, 0.5, -1.05},
+			{1.05, -0.5, -1.5, 1.5, 0.5, -1.05},
+			{-1.5, -0.5, 1.05, -1.05, 0.5, 1.5},
+			{1.05, -0.5, 1.05, 1.5, 0.5, 1.5}
 		}
 	},
 	groups = {falling_node = 1, oddly_breakable_by_hand = 3},
 	tiles = {"colormap.png"},
+	on_construct = function(pos)
+		local p1 = {x = pos.x, y = pos.y + 1, z = pos.z}
+		local p2 = {x = pos.x, y = pos.y + 2, z = pos.z}
+		local n1 = minetest.get_node(p1)
+		local n2 = minetest.get_node(p2)
+		local def1 = minetest.registered_nodes[n1.name]
+		local def2 = minetest.registered_nodes[n2.name]
+		if def1 and (def1.buildable_to or n1.name == "air") then
+			minetest.set_node(p1, {name = "random_stuff:wood_structure_dummy_1"})
+		end
+		if def2 and (def2.buildable_to or n2.name == "air") then
+			minetest.set_node(p2, {name = "random_stuff:wood_structure_dummy_2"})
+		end
+	end,
+	on_destruct = function(pos)
+		local p1 = {x = pos.x, y = pos.y + 1, z = pos.z}
+		local p2 = {x = pos.x, y = pos.y + 2, z = pos.z}
+		local n1 = minetest.get_node(p1)
+		local n2 = minetest.get_node(p2)
+		if n1.name == "random_stuff:wood_structure_dummy_1" then
+			minetest.remove_node(p1)
+		end
+		if n2.name == "random_stuff:wood_structure_dummy_2" then
+			minetest.remove_node(p2)
+		end
+	end,
+})
+
+
+minetest.register_node("random_stuff:wood_structure_dummy_1", {
+	on_dig = function(pos, node, digger)
+		local p = {x = pos.x, y = pos.y - 1, z = pos.z}
+		local n = minetest.get_node(p)
+		if n.name == "random_stuff:wood_structure" then
+			minetest.node_dig(p, n, digger)
+		end
+	end,
+
+	description = "Chaos Wood Structure (Middle)",
+	drawtype = "airlike",
+	paramtype = "light",
+	sunlight_propagates = true,
+	walkable = true,
+	buildable_to = true,
+	pointable = true,
+	drop = "",
+	groups = {not_in_creative_inventory = 1, oddly_breakable_by_hand = 3},
+	selection_box = {
+		type = "fixed",
+		fixed = {
+			{-1.63, 0.4, 1.05, 1.63, 0.5, 1.63},
+			{-1.63, 0.4, -1.63, 1.63, 0.5, -1.05},
+			{-1.63, 0.4, -1.05, -1.05, 0.5, 1.05},
+			{1.05, 0.4, -1.05, 1.63, 0.5, 1.05},
+			{-1.5, -0.5, -1.5, -1.05, 0.4, -1.05},
+			{1.05, -0.5, -1.5, 1.5, 0.4, -1.05},
+			{-1.5, -0.5, 1.05, -1.05, 0.4, 1.5},
+			{1.05, -0.5, 1.05, 1.5, 0.4, 1.5},
+			{-1.05, 0.4, -1.05, 1.05, 0.5, 1.05}
+		}
+	},
+	collision_box = {
+		type = "fixed",
+		fixed = {
+			{-1.63, 0.4, 1.05, 1.63, 0.5, 1.63},
+			{-1.63, 0.4, -1.63, 1.63, 0.5, -1.05},
+			{-1.63, 0.4, -1.05, -1.05, 0.5, 1.05},
+			{1.05, 0.4, -1.05, 1.63, 0.5, 1.05},
+			{-1.5, -0.5, -1.5, -1.05, 0.4, -1.05},
+			{1.05, -0.5, -1.5, 1.5, 0.4, -1.05},
+			{-1.5, -0.5, 1.05, -1.05, 0.4, 1.5},
+			{1.05, -0.5, 1.05, 1.5, 0.4, 1.5},
+			{-1.05, 0.4, -1.05, 1.05, 0.5, 1.05}
+		}
+	},
+})
+
+minetest.register_node("random_stuff:wood_structure_dummy_2", {
+	on_dig = function(pos, node, digger)
+		local p = {x = pos.x, y = pos.y - 2, z = pos.z}
+		local n = minetest.get_node(p)
+		if n.name == "random_stuff:wood_structure" then
+			minetest.node_dig(p, n, digger)
+		end
+	end,
+
+	description = "Chaos Wood Structure (Top)",
+	drawtype = "airlike",
+	paramtype = "light",
+	sunlight_propagates = true,
+	walkable = true,
+	buildable_to = true,
+	pointable = true,
+	drop = "",
+	groups = {not_in_creative_inventory = 1, oddly_breakable_by_hand = 3},
+	selection_box = {
+		type = "fixed",
+		fixed = {
+			{-1.63, -0.5, 1.05, 1.63, 0.5, 1.63},
+			{-1.63, -0.5, -1.63, 1.63, 0.5, -1.05},
+			{-1.63, -0.5, -1.05, -1.05, 0.5, 1.05},
+			{1.05, -0.5, -1.05, 1.63, 0.5, 1.05}
+		}
+	},
+	collision_box = {
+		type = "fixed",
+		fixed = {
+			{-1.63, -0.5, 1.05, 1.63, 0.5, 1.63},
+			{-1.63, -0.5, -1.63, 1.63, 0.5, -1.05},
+			{-1.63, -0.5, -1.05, -1.05, 0.5, 1.05},
+			{1.05, -0.5, -1.05, 1.63, 0.5, 1.05}
+		}
+	},
 })
 
 -- Chaos Chest implementation
@@ -86,7 +183,7 @@ minetest.register_node("random_stuff:chaos_chest", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	walkable = true,
-	buildable_to = false,
+	buildable_to = true,
 	selection_box = {type = "fixed", fixed = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5}},
 	collision_box = {type = "fixed", fixed = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5}},
 	groups = {choppy = 2, oddly_breakable_by_hand = 2},
