@@ -28,7 +28,7 @@ minetest.register_node("random_stuff:wood_structure", {
 	mesh = "wood-structure.obj",
 	paramtype2 = "facedir",
 	paramtype = "light",
-	walkable = true,
+	walkable = false,
 	buildable_to = false,
 	selection_box = {
 		type = "fixed",
@@ -52,17 +52,6 @@ minetest.register_node("random_stuff:wood_structure", {
 	},
 	groups = {falling_node = 1, oddly_breakable_by_hand = 3},
 	tiles = {"colormap.png"},
-	on_place = function(itemstack, placer, pointed_thing)
-		if pointed_thing.type ~= "node" then return itemstack end
-		local pos = pointed_thing.above
-		local minp = {x=pos.x-2, y=pos.y-2, z=pos.z-2}
-		local maxp = {x=pos.x+2, y=pos.y+2, z=pos.z+2}
-		local overlap = minetest.find_nodes_in_area(minp, maxp, {"random_stuff:wood_structure"})
-		if #overlap > 0 then
-			return itemstack
-		end
-		return minetest.item_place(itemstack, placer, pointed_thing)
-	end,
 })
 
 -- Chaos Chest implementation
