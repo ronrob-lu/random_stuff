@@ -28,7 +28,7 @@ minetest.register_node("random_stuff:wood_structure", {
 	mesh = "wood-structure.obj",
 	paramtype2 = "facedir",
 	paramtype = "light",
-	walkable = false,
+	walkable = true,
 	buildable_to = false,
 	selection_box = {
 		type = "fixed",
