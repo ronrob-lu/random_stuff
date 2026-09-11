@@ -79,7 +79,7 @@ end
 minetest.register_node("random_stuff:chaos_chest", {
 	description = "Chaos Chest",
 	drawtype = "mesh",
-	mesh = "chest.glb",
+	mesh = "chest.gltf",
 	paramtype = "light",
 	paramtype2 = "facedir",
 	walkable = true,
@@ -90,10 +90,14 @@ minetest.register_node("random_stuff:chaos_chest", {
 	tiles = {"colormap.png"},
 
 	-- Open/close animation definitions per specification (0.05s buffered)
-	-- chest.glb timings: open = 0.3s, close = 1.0s
+	-- chest.gltf timings in seconds (continuous timeline):
+	-- open = 0.05s - 0.35s
+	-- close = 0.40s - 1.40s
+	-- open_close = 1.45s - 3.45s
 	animation = {
-		open_start = 2, open_end = 11,
-		close_start = 12, close_end = 42,
+		open_start = 0.05, open_end = 0.35,
+		close_start = 0.40, close_end = 1.40,
+		open_close_start = 1.45, open_close_end = 3.45,
 	},
 
 	on_construct = function(pos)
@@ -117,7 +121,7 @@ minetest.register_node("random_stuff:chaos_chest", {
 		minetest.show_formspec(clicker:get_player_name(), "random_stuff:chaos_chest_"..minetest.pos_to_string(pos), get_chest_formspec(pos))
 		minetest.sound_play("default_chest_open", {pos = pos, gain = 0.3, max_hear_distance = 10}, true)
 		if minetest.set_node_animation then
-			minetest.set_node_animation(pos, {range = {x = 2, y = 11}, speed = 30, blend = 0})
+			minetest.set_node_animation(pos, {range = {x = 0.05, y = 0.35}, speed = 1, blend = 0})
 		end
 	end,
 })
@@ -131,7 +135,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			if pos then
 				minetest.sound_play("default_chest_close", {pos = pos, gain = 0.3, max_hear_distance = 10}, true)
 				if minetest.set_node_animation then
-					minetest.set_node_animation(pos, {range = {x = 12, y = 42}, speed = 30, blend = 0})
+					minetest.set_node_animation(pos, {range = {x = 0.40, y = 1.40}, speed = 1, blend = 0})
 				end
 			end
 		end
