@@ -1,5 +1,7 @@
 # Random Stuff
 
+**Note: This mod is just in development and nobody knows if it is needed.**
+
 A Luanti (Minetest) mod adding interactive Chaos Chests and physically simulated falling structural blocks.
 
 ## Installation
